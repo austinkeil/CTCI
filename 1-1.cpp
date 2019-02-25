@@ -29,10 +29,23 @@ bool IsUnique2(const string &s) {
     return true;
 }
 
+bool IsUnique3(const string &s) {
+    bool arr[256] = {false};
+    for (auto &c: s) {
+        if (arr[c]) {
+            return false;
+        }
+        else {
+            arr[c] = true;
+        }
+    }
+    return true;
+}
+
 int main() {
     string s1 = "supercali";
     string s2 = "supercaliuu";
-    cout << IsUnique2(s1) << endl;
-    cout << IsUnique2(s2) << endl;
+    cout << IsUnique3(s1) << endl;
+    cout << IsUnique3(s2) << endl;
 
 }
