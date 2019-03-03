@@ -50,10 +50,32 @@ bool rotate2(int **matrix, int n) {
             matrix[i][last] = top;
         }
     }
+    return true;
 }
+
+bool rotate_counter(int **matrix, int n) {
+    if (n == 0) return false;
+
+    for (int layer = 0; layer < n/2; layer++) {
+        int first = layer;
+        int last = n - 1 - layer;
+        for (int i = last; i > first; i--) {
+            int offset = last - i;
+
+            int top = matrix[first][i];
+
+            matrix[first][i] = matrix[last-offset][last];
+            matrix[last-offset][last] = matrix[last][last-offset];
+            matrix[last][last-offset] = matrix[i][first];
+            matrix[i][first] = top;
+        }
+    }
+}
+
 
 int main() {
     int N = 10;
+
     int **matrix;
     matrix = new int *[N];
     for (int i = 0; i < N; i++) {
@@ -67,7 +89,9 @@ int main() {
     }
     cout << "Start: " << endl;
     printMatrix(matrix, N, N);
-    rotate2(matrix, N);
+    rotate_counter(matrix, N);
     cout << "Finish: " << endl;
     printMatrix(matrix, N, N);
+
+    delete [] matrix;
 }
