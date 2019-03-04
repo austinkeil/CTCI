@@ -12,6 +12,7 @@ public:
     int length;
     SinglyLinkedList();
     Node* kthToLast(int k);
+    Node* kthToLastNoLength(int k);
     void print();
     void insert(int data);
 };
@@ -33,6 +34,34 @@ Node* SinglyLinkedList::kthToLast(int k) {
         i++;
     }
     return cur;
+}
+
+Node* SinglyLinkedList::kthToLastNoLength(int k) {
+    if (k <= 0 || head == nullptr) {
+        return head;
+    }
+
+    Node* cur = head;
+    int i = 1;
+    while (cur->next) {
+        cur = cur->next;
+        i++;
+    }
+
+    // i is now the length of the list
+
+    cur = head;
+    if (i - k < 0) {
+        return cur;
+    } else {
+        int j = 1;
+        while (j < i - k) {
+            cur = cur->next;
+            j++;
+        }
+        return cur;
+    }
+
 }
 
 void SinglyLinkedList::print() {
@@ -65,9 +94,9 @@ int main() {
         list1->insert(rand() % 100);
     }
 
-    Node* p = list1->kthToLast(4);
-    Node* q = list1->kthToLast(7);
-    Node* r = list1->kthToLast(10);
+    Node* p = list1->kthToLastNoLength(4);
+    Node* q = list1->kthToLastNoLength(7);
+    Node* r = list1->kthToLastNoLength(10);
 
 
     list1->print();
