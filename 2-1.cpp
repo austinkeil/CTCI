@@ -25,6 +25,10 @@ public:
     void printReversed();
 
     void deleteDups();
+
+    void deleteDupsNoBuffer();
+
+    void deleteNode(Node* node);
 };
 
 LinkedList::LinkedList() {
@@ -86,21 +90,54 @@ void LinkedList::deleteDups() {
     unordered_set<int> seen;
     while(cur) {
         if (seen.count(cur->data)) {
-            if (cur->next) {
-                cur->prev->next = cur->next;
-                cur->next->prev = cur->prev;
-            } else {
-                cur->prev->next = nullptr;
-            }
             d = cur;
             cur = cur->next;
-            this->length--;
-            delete d;
+            this->deleteNode(d);
         } else {
             seen.insert(cur->data);
             cur = cur->next;
         }
     }
+}
+
+void LinkedList::deleteNode(Node* node) {
+
+    if (this->length == 1) {
+        this->head = nullptr;
+        this->tail = nullptr;
+    } else if (this->head == node) {
+        this->head = node->next;
+        node->next->prev = nullptr;
+    } else if (this->tail == node) {
+        this->tail = node->prev;
+        node->prev->next = nullptr;
+    } else {
+        node->prev->next = node->next;
+        node->next->prev = node->prev;
+    }
+    length--;
+    delete node;
+}
+
+void LinkedList::deleteDupsNoBuffer() {
+    Node* cur = this->head;
+    Node* runner = nullptr;
+    Node* d = nullptr;
+
+    while (cur) {
+        runner = cur;
+        while (runner->next) {
+            if (cur->data == runner->next->data) {
+                d = runner->next;
+                runner->next = runner->next->next;
+                deleteNode(d);
+            } else {
+                runner = runner->next;
+            }
+        }
+        cur = cur->next;
+    }
+
 }
 
 int main() {
@@ -112,7 +149,7 @@ int main() {
     list1->print();
     cout << "List Length: " << list1->length << endl;
 
-    list1->deleteDups();
+    list1->deleteDupsNoBuffer();
     list1->print();
     cout << "List Length: " << list1->length << endl;
 
