@@ -122,7 +122,7 @@ void SinglyLinkedList::print() {
 
 }
 
-void SinglyLinkedList::insert(int data) {
+Node* SinglyLinkedList::insert(int data) {
     Node* node = new Node();
     node->data = data;
 
@@ -133,6 +133,7 @@ void SinglyLinkedList::insert(int data) {
         head = node;
     }
     length++;
+    return Node;
 }
 
 

@@ -12,7 +12,7 @@ public:
     int length;
     SinglyLinkedList();
     void print();
-    void insert(int data);
+    Node* insert(int data);
 };
 
 
@@ -25,14 +25,16 @@ void SinglyLinkedList::print() {
     if (length == 0)
         return;
     Node* cur = head;
+    int i = 1;
     while (cur) {
-        cout << "i: " << cur->data << endl;
+        cout << i << ": " << cur->data << endl;
         cur = cur->next;
+        i++;
     }
 
 }
 
-void SinglyLinkedList::insert(int data) {
+Node* SinglyLinkedList::insert(int data) {
     Node* node = new Node();
     node->data = data;
 
@@ -43,4 +45,5 @@ void SinglyLinkedList::insert(int data) {
         head = node;
     }
     length++;
+    return node;
 }
