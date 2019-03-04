@@ -40,6 +40,30 @@ int sum(struct Node* head1, struct Node* head2) {
     return sum(head1, head2, subSum, multiplier);
 }
 
+Node* sum2(struct Node* head1, struct Node* head2, int carry) {
+    if (head1 == nullptr && head2 == nullptr && carry == 0) {
+        return nullptr;
+    }
+
+    Node* result = new Node();
+    int value = carry;
+    if (head1 != nullptr) {
+        value += head1->data;
+    }
+
+    if (head2 != nullptr) {
+        value += head2->data;
+    }
+
+    result->data = value % 10;
+
+    if (head1 != nullptr || head2 != nullptr) {
+        Node* more = sum2(head1 == nullptr ? nullptr : head1->next, head2 == nullptr ? nullptr : head2->next, value >= 10 ? 1 : 0);
+        result->next = more;
+    }
+    return result;
+}
+
 int main() {
     struct Node* node = newNode(1);
     struct Node* head1 = node;
@@ -55,5 +79,12 @@ int main() {
     node = node->next;
     node->next = newNode(7);
 
-    cout << "Sum: " << sum(head1, head2);
+
+    cout << "Sum: " << endl;
+    cout << sum(head1, head2) << endl;
+    Node* head = sum2(head1, head2, 0);
+    while (head) {
+        cout << head->data << " -> ";
+        head = head->next;
+    }
 }
