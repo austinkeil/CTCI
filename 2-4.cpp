@@ -23,29 +23,29 @@ void print(Node* head) {
     }
 }
 
-struct Node* partition(struct Node* head, int pivot) {
+struct Node* partition(struct Node* node, int pivot) {
     struct Node *smallHead = nullptr, *smallTail = nullptr;
     struct Node *largeHead = nullptr, *largeTail = nullptr;
 
-    while (head != nullptr) {
-        if (head->data < pivot) {
+    while (node != nullptr) {
+        if (node->data < pivot) {
             if (smallHead == nullptr) {
-                smallHead = head;
-                smallTail = head;
+                smallHead = node;
+                smallTail = node;
             } else {
-                smallTail->next = head;
-                smallTail = head;
+                smallTail->next = node;
+                smallTail = node;
             }
         } else {
             if (largeHead == nullptr) {
-                largeHead = head;
-                largeTail = head;
+                largeHead = node;
+                largeTail = node;
             } else {
-                largeTail->next = head;
-                largeTail = head;
+                largeTail->next = node;
+                largeTail = node;
             }
         }
-        head = head->next;
+        node = node->next;
     }
 
     if (smallHead == nullptr) {
@@ -60,9 +60,28 @@ struct Node* partition(struct Node* head, int pivot) {
     return smallHead;
 }
 
+struct Node* partition2(struct Node* head, int pivot) {
+    struct Node* tail = head;
+
+    Node* cur = head;
+    while (cur != nullptr) {
+        struct Node* next = cur->next;
+        if (cur->data < pivot) {
+            cur->next = head;
+            head = cur;
+        } else {
+            tail->next = cur;
+            tail = cur;
+        }
+        cur = next;
+    }
+    tail->next = nullptr;
+    return head;
+}
+
 int main() {
-    Node* cur = newNode(rand() % 100);
-    Node* head = cur;
+    struct Node* cur = newNode(rand() % 100);
+    struct Node* head = cur;
     for (int i = 1; i < 10; i++) {
         Node* next = newNode(rand() % 100);
         cur->next = next;
@@ -70,7 +89,7 @@ int main() {
     }
     cout << "Before Partition: " << endl;
     print(head);
-    head = partition(head, 50);
+    head = partition2(head, 50);
     cout << endl << "After Partition: " << endl;
     print(head);
 }
