@@ -13,6 +13,9 @@ public:
     SinglyLinkedList();
     Node* kthToLast(int k);
     Node* kthToLastNoLength(int k);
+    Node* kthToLastNoLength2(int k);
+    Node* kthToLastRecursive(Node* head, int k, int &i);
+    Node* kthToLastRecursive(Node* head, int k);
     void print();
     void insert(int data);
 };
@@ -48,8 +51,6 @@ Node* SinglyLinkedList::kthToLastNoLength(int k) {
         i++;
     }
 
-    // i is now the length of the list
-
     cur = head;
     if (i - k < 0) {
         return cur;
@@ -63,6 +64,52 @@ Node* SinglyLinkedList::kthToLastNoLength(int k) {
     }
 
 }
+
+// Implemented such that k=1 returns last element,
+// k=2 returns second to last element
+Node* SinglyLinkedList::kthToLastNoLength2(int k) {
+    if (head == nullptr)
+        return nullptr;
+
+    Node* p1 = head;
+    Node* p2 = head;
+
+    for (int i = 0; i < k; i++) {
+        if (p1 == nullptr)
+            return nullptr;
+        p1 = p1->next;
+    }
+
+    // now p1 is k elements ahead of p2
+
+    while (p1) {
+        p1 = p1->next;
+        p2 = p2->next;
+    }
+
+    return p2;
+}
+
+// Implemented such that k=1 returns last element,
+// k=2 returns second to last element
+Node* SinglyLinkedList::kthToLastRecursive(Node* head, int k, int &i) {
+    if (head == nullptr) {
+        return nullptr;
+    }
+
+    Node* rn = kthToLastRecursive(head->next, k, i);
+    i = i + 1;
+    if (i == k) {
+        return head;
+    }
+    return rn;
+}
+
+Node* SinglyLinkedList::kthToLastRecursive(Node* head, int k) {
+    int i = 0;
+    return kthToLastRecursive(head, k, i);
+}
+
 
 void SinglyLinkedList::print() {
     if (length == 0)
@@ -88,15 +135,18 @@ void SinglyLinkedList::insert(int data) {
     length++;
 }
 
+
+
 int main() {
     SinglyLinkedList* list1 = new SinglyLinkedList();
     for (int i = 0; i < 10; i++) {
         list1->insert(rand() % 100);
     }
 
-    Node* p = list1->kthToLastNoLength(4);
-    Node* q = list1->kthToLastNoLength(7);
-    Node* r = list1->kthToLastNoLength(10);
+
+    Node* p = list1->kthToLastRecursive(list1->head, 4);
+    Node* q = list1->kthToLastRecursive(list1->head, 7);
+    Node* r = list1->kthToLastRecursive(list1->head, 10);
 
 
     list1->print();
